@@ -77,6 +77,16 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
+    - name: Install Turbo Acc
+      run: |
+        cd openwrt
+        curl -sSL https://raw.githubusercontent.com/chenmozhijin/turboacc/luci/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
+    
+    - name: Delete official nft-fullcone package
+      run: |
+        cd openwrt
+        rm -rf ./package/network/utils/fullconenat-nft
+
     - name: Download package
       id: package
       run: |
@@ -85,11 +95,6 @@ jobs:
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
-
-    - name: Install Turbo Acc
-      run: |
-        cd openwrt
-        curl -sSL https://raw.githubusercontent.com/chenmozhijin/turboacc/luci/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
         
     - name: Compile the firmware
       id: compile
